@@ -9,7 +9,7 @@
 ## Demo
 
 ```js
-import { match } from '../src/index'
+import { match } from '../src'
 
 describe('#match', () => {
   test('should works as expect', () => {
