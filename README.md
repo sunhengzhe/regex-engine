@@ -1,12 +1,12 @@
 # Regex engine base on NFA
 
-## Test
+## Support
 
-```bash
-npm test
-```
+- `*` closure
+- `+` concat
+- `|` union
 
-## Usage
+## Demo
 
 ```js
 import { match } from '../src/index'
@@ -33,4 +33,17 @@ describe('#match', () => {
     expect(match('a(b|c)*', 'abbccb')).toBe(true)
   })
 })
+```
+
+## Usage
+
+```js
+const { match } = require('./dist')
+match('a(b|c)*', 'abbccb') // true
+```
+
+## Test
+
+```bash
+npm test
 ```

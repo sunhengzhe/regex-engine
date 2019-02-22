@@ -9,5 +9,3 @@ export const match = (regex: string, exp: string): boolean => {
 
   return isMatchOf(exp, nfa)
 }
-
-match('ab', 'a')
