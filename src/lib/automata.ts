@@ -1,5 +1,4 @@
-import { CONCATENATION_OPERATOR, UNION_OPERATOR, CLOSURE_OPERATOR,
-  GROUP_LEFT_OPERATOR, GROUP_RIGHT_OPERATOR } from './token'
+import { CONCATENATION_OPERATOR, UNION_OPERATOR, CLOSURE_OPERATOR } from './token'
 
 export class State {
   isEnd: boolean;
@@ -42,8 +41,8 @@ export class NFA {
 
     newStartState.addEpsilonTransition(aNFA.startState)
       .addEpsilonTransition(bNFA.startState);
-    aNFA.endState.addEpsilonTransition(newEndState);
-    bNFA.endState.addEpsilonTransition(newEndState);
+    aNFA.endState.addEpsilonTransition(newEndState).isEnd = false;
+    bNFA.endState.addEpsilonTransition(newEndState).isEnd = false;
 
     return new NFA(newStartState, newEndState);
   }
@@ -52,7 +51,7 @@ export class NFA {
     const newStartState = aNFA.startState;
     const newEndState = bNFA.endState;
 
-    aNFA.endState.addEpsilonTransition(bNFA.startState);
+    aNFA.endState.addEpsilonTransition(bNFA.startState).isEnd = false;
 
     return new NFA(newStartState, newEndState);
   }
@@ -65,6 +64,7 @@ export class NFA {
       .addEpsilonTransition(newEndState)
     nfa.endState.addEpsilonTransition(newEndState)
       .addEpsilonTransition(nfa.startState)
+      .isEnd = false
 
       return new NFA(newStartState, newEndState)
   }
