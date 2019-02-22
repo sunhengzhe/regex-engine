@@ -118,11 +118,11 @@ export const isMatchOf = (exp: string, nfa: NFA) => {
   let currentStates = nfa.getClosure(startState)
 
   for (const token of exp) {
-    const nextStates: Array<State> = []
+    let nextStates: Array<State> = []
 
     currentStates.forEach(state => {
       if (state.transition[token]) {
-        nextStates.push(state.transition[token])
+        nextStates = nextStates.concat(nfa.getClosure(state.transition[token]))
       }
     })
 

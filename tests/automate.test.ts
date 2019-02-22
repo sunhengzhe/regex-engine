@@ -94,6 +94,9 @@ describe('#automata', () => {
 
       const nfa = new NFA(q0, q8)
       expect(isMatchOf('aaabc', nfa)).toBe(true)
+      expect(isMatchOf('c', nfa)).toBe(true)
+      expect(isMatchOf('bac', nfa)).toBe(true)
+      expect(isMatchOf('d', nfa)).toBe(false)
     })
   })
 })
