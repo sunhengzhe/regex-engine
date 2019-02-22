@@ -4,13 +4,13 @@ const CLOSURE_OPERATOR = '*'
 const GROUP_LEFT_OPERATOR = '('
 const GROUP_RIGHT_OPERATOR = ')'
 
-const operatorPrecedence = {
+const operatorPriorityMap: { [key: string]: number } = {
   [CONCATENATION_OPERATOR]: 1,
   [UNION_OPERATOR]: 2,
   [CLOSURE_OPERATOR]: 3
 }
 
-const insertExplicitConcatOperator = (exp) => {
+export const insertExplicitConcatOperator = (exp: string): string => {
   let output = ''
 
   for (let i = 0; i < exp.length; i++) {
@@ -37,9 +37,9 @@ const insertExplicitConcatOperator = (exp) => {
   return output
 }
 
-const peek = (stack) => stack.length && stack[stack.length - 1]
+const peek = (stack: Array<string>): string => stack.length && stack[stack.length - 1]
 
-const infixToPostfix = (exp) => {
+export const infixToPostfix = (exp: string): string=> {
   let output = ''
   const stack = []
 
@@ -55,8 +55,8 @@ const infixToPostfix = (exp) => {
       token === CLOSURE_OPERATOR
     ) {
       while (
-        operatorPrecedence[peek(stack)] &&
-        operatorPrecedence[peek(stack)] >= operatorPrecedence[token]
+        operatorPriorityMap[peek(stack)] &&
+        operatorPriorityMap[peek(stack)] >= operatorPriorityMap[token]
       ) {
         output += stack.pop()
       }
@@ -73,9 +73,4 @@ const infixToPostfix = (exp) => {
   }
 
   return output
-}
-
-module.exports = {
-  insertExplicitConcatOperator,
-  infixToPostfix
 }

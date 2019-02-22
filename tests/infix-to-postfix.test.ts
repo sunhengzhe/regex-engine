@@ -1,4 +1,4 @@
-const { insertExplicitConcatOperator, infixToPostfix } = require('../lib/infix-to-postfix')
+import { insertExplicitConcatOperator, infixToPostfix } from '../src/lib/infix-to-postfix'
 
 describe('#infix-to-postfix', () => {
   describe('insertExplicitConcatOperator', () => {
