@@ -1,4 +1,4 @@
-import { State, NFA, buildToNFA } from '../src/lib/automata';
+import { State, NFA, buildToNFA, isMatchOf } from '../src/lib/automata';
 
 describe('#automata', () => {
   describe('state', () => {
@@ -30,7 +30,25 @@ describe('#automata', () => {
       })
       expect(epsilonTransition).toEqual([stateC])
     })
+  })
 
+  describe('NFA', () => {
+    test('should return closure as expect', () => {
+      const p1 = new State()
+      const p2 = new State()
+      const p3 = new State()
+      const p4 = new State(true)
+      p1.addEpsilonTransition(p2)
+      p2.addEpsilonTransition(p3)
+      p3.addEpsilonTransition(p1)
+        .addTransition('a', p4)
+
+      const nfa = new NFA(p1, p4)
+      expect(nfa.getClosure(p1)).toEqual([p1, p2, p3])
+    })
+  })
+
+  describe('buildToNFA', () => {
     test('should build string to NFA as expect', () => {
       const NFA1 = buildToNFA('ab|')
       expect(NFA1.startState.epsilonTransition[0].transition.a.epsilonTransition[0])
@@ -48,6 +66,34 @@ describe('#automata', () => {
         .toEqual(new State(true))
       expect(NFA3.startState.epsilonTransition[0].transition.a.epsilonTransition[1].transition.a.epsilonTransition[0])
         .toEqual(new State(true))
+    })
+  })
+
+  describe('isMatchOf', () => {
+    test('should return match result as expect', () => {
+      const q0 = new State();
+      const q1 = new State();
+      const q2 = new State();
+      const q3 = new State();
+      const q4 = new State();
+      const q5 = new State();
+      const q6 = new State();
+      const q7 = new State();
+      const q8 = new State(true);
+      q0.addEpsilonTransition(q7);
+      q0.addEpsilonTransition(q1);
+      q1.addEpsilonTransition(q2);
+      q1.addEpsilonTransition(q4);
+      q2.addTransition("a", q3);
+      q3.addEpsilonTransition(q6);
+      q4.addTransition("b", q5);
+      q5.addEpsilonTransition(q6);
+      q6.addEpsilonTransition(q1);
+      q6.addEpsilonTransition(q7);
+      q7.addTransition("c", q8);
+
+      const nfa = new NFA(q0, q8)
+      expect(isMatchOf('aaabc', nfa)).toBe(true)
     })
   })
 })

@@ -76,6 +76,18 @@ export class NFA {
     this.startState = startState;
     this.endState = endState;
   }
+
+  getClosure(state: State): Array<State> {
+    let visited: Array<State> = [state]
+    let closure: Array<State> = [state]
+    while (closure.length) {
+      const state = closure.pop()
+      const nextStates = state.epsilonTransition.filter(item => !visited.includes(item))
+      visited = visited.concat(nextStates)
+      closure = closure.concat(nextStates)
+    }
+    return visited
+  }
 }
 
 export const buildToNFA = (exp: string) => {
@@ -99,4 +111,23 @@ export const buildToNFA = (exp: string) => {
   }
 
   return stack.pop()
+}
+
+export const isMatchOf = (exp: string, nfa: NFA) => {
+  const startState = nfa.startState
+  let currentStates = nfa.getClosure(startState)
+
+  for (const token of exp) {
+    const nextStates: Array<State> = []
+
+    currentStates.forEach(state => {
+      if (state.transition[token]) {
+        nextStates.push(state.transition[token])
+      }
+    })
+
+    currentStates = nextStates
+  }
+
+  return currentStates.some(state => state.isEnd)
 }
