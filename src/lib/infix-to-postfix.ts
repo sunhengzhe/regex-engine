@@ -1,8 +1,5 @@
-const CONCATENATION_OPERATOR = "·";
-const UNION_OPERATOR = "|";
-const CLOSURE_OPERATOR = "*";
-const GROUP_LEFT_OPERATOR = "(";
-const GROUP_RIGHT_OPERATOR = ")";
+import { CONCATENATION_OPERATOR, UNION_OPERATOR, CLOSURE_OPERATOR,
+  GROUP_LEFT_OPERATOR, GROUP_RIGHT_OPERATOR } from './token'
 
 const operatorPriorityMap: { [key: string]: number } = {
   [CONCATENATION_OPERATOR]: 1,

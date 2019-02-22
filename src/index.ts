@@ -1,4 +1,5 @@
-import { State } from "./lib/automata";
+import { insertExplicitConcatOperator, infixToPostfix } from "./lib/infix-to-postfix";
+import { State, NFA, buildToNFA } from "./lib/automata";
 
 const q0 = new State();
 const q1 = new State();
@@ -20,3 +21,11 @@ q5.addEpsilonTransition(q6);
 q6.addEpsilonTransition(q1);
 q6.addEpsilonTransition(q7);
 q7.addTransition("c", q8);
+
+export const match = (regex: string, exp: string): boolean => {
+  const strWithConcat = insertExplicitConcatOperator(exp)
+  const strWithPostfix = infixToPostfix(strWithConcat)
+  const nfa = buildToNFA(strWithPostfix)
+
+  return false
+}
