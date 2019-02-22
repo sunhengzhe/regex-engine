@@ -3,7 +3,6 @@
 ## Support
 
 - `*` closure
-- `+` concat
 - `|` union
 
 ## Demo
