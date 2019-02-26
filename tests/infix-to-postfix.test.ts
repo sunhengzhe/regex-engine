@@ -20,8 +20,18 @@ describe('#infix-to-postfix', () => {
       expect(insertExplicitConcatOperator('ab?c')).toBe('a·b?·c')
     })
 
+    test('should insert dots between + and word', () => {
+      expect(insertExplicitConcatOperator('a+b')).toBe('a+·b')
+      expect(insertExplicitConcatOperator('a+bc')).toBe('a+·b·c')
+      expect(insertExplicitConcatOperator('ab+c')).toBe('a·b+·c')
+    })
+
     test('should insert dots between * and (', () => {
       expect(insertExplicitConcatOperator('a*(b*(c))')).toBe('a*·(b*·(c))')
+    })
+
+    test('should insert dots between + and (', () => {
+      expect(insertExplicitConcatOperator('a+(b*(c))')).toBe('a+·(b*·(c))')
     })
 
     test('should insert dots between ? and (', () => {
@@ -46,6 +56,10 @@ describe('#infix-to-postfix', () => {
       expect(infixToPostfix('a?·b')).toBe('a?b·')
       expect(infixToPostfix('a?·b·c')).toBe('a?b·c·')
       expect(infixToPostfix('a·b?·c')).toBe('ab?·c·')
+
+      expect(infixToPostfix('a+·b')).toBe('a+b·')
+      expect(infixToPostfix('a+·b·c')).toBe('a+b·c·')
+      expect(infixToPostfix('a·b+·c')).toBe('ab+·c·')
 
       expect(infixToPostfix('a*·(b?·(c))')).toBe('a*b?c··')
     })

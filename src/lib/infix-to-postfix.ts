@@ -1,10 +1,11 @@
 import { CONCATENATION_OPERATOR, UNION_OPERATOR, CLOSURE_OPERATOR,
-  GROUP_LEFT_OPERATOR, GROUP_RIGHT_OPERATOR, ZERO_OR_ONE_OPERATOR } from './token'
+  GROUP_LEFT_OPERATOR, GROUP_RIGHT_OPERATOR, ZERO_OR_ONE_OPERATOR, ONE_OR_MORE_OPERATOR } from './token'
 
 const operatorPriorityMap: { [key: string]: number } = {
   [UNION_OPERATOR]: 1,
   [CONCATENATION_OPERATOR]: 2,
   [ZERO_OR_ONE_OPERATOR]: 3,
+  [ONE_OR_MORE_OPERATOR]: 3,
   [CLOSURE_OPERATOR]: 3
 };
 
@@ -24,6 +25,7 @@ export const insertExplicitConcatOperator = (exp: string): string => {
 
       if (lookahead === CLOSURE_OPERATOR ||
         lookahead === ZERO_OR_ONE_OPERATOR ||
+        lookahead === ONE_OR_MORE_OPERATOR ||
         lookahead === GROUP_RIGHT_OPERATOR ||
         lookahead === UNION_OPERATOR) {
         continue;
@@ -52,7 +54,8 @@ export const infixToPostfix = (exp: string): string => {
       token === CONCATENATION_OPERATOR ||
       token === UNION_OPERATOR ||
       token === CLOSURE_OPERATOR ||
-      token === ZERO_OR_ONE_OPERATOR
+      token === ZERO_OR_ONE_OPERATOR ||
+      token === ONE_OR_MORE_OPERATOR
     ) {
       while (
         operatorPriorityMap[peek(stack)] &&

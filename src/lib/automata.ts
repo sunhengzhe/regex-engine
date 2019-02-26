@@ -1,4 +1,4 @@
-import { CONCATENATION_OPERATOR, UNION_OPERATOR, CLOSURE_OPERATOR, ZERO_OR_ONE_OPERATOR } from './token';
+import { CONCATENATION_OPERATOR, UNION_OPERATOR, CLOSURE_OPERATOR, ZERO_OR_ONE_OPERATOR, ONE_OR_MORE_OPERATOR } from './token';
 
 export class State {
   isEnd: boolean;
@@ -81,6 +81,18 @@ export class NFA {
       return new NFA(newStartState, newEndState)
   }
 
+  static oneOrMore(nfa: NFA) {
+    const newStartState = new State()
+    const newEndState = new State(true)
+
+    newStartState.addEpsilonTransition(nfa.startState)
+    nfa.endState.addEpsilonTransition(nfa.startState)
+      .addEpsilonTransition(newEndState)
+      .isEnd = false
+
+      return new NFA(newStartState, newEndState)
+  }
+
   startState: State;
   endState: State;
 
@@ -120,6 +132,9 @@ export const buildToNFA = (exp: string) => {
     } else if (token === ZERO_OR_ONE_OPERATOR) {
       const nfa = stack.pop()
       stack.push(NFA.zeroOrOne(nfa))
+    } else if (token === ONE_OR_MORE_OPERATOR) {
+      const nfa = stack.pop()
+      stack.push(NFA.oneOrMore(nfa))
     } else {
       stack.push(NFA.createBasicNFA(token))
     }

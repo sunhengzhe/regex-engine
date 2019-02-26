@@ -17,7 +17,7 @@ describe('#match', () => {
     expect(match('a(abc)*c', 'ac')).toBe(true)
     expect(match('a(abc)*c', 'aabcc')).toBe(true)
     expect(match('a(abc)*c', 'aabcabcabcc')).toBe(true)
-    expect(match('a(abc)*c', 'abcc')).toBe(false)
+    expect(match('a(abc)*c', 'addc')).toBe(false)
   })
 
   test('should union works as expect', () => {
@@ -39,7 +39,20 @@ describe('#match', () => {
     expect(match('a(abc)?c', 'ac')).toBe(true)
     expect(match('a(abc)?c', 'aabcc')).toBe(true)
     expect(match('a(abc)?c', 'aabcabcc')).toBe(false)
-    expect(match('a(abc)?c', 'abcc')).toBe(false)
+    expect(match('a(abc)?c', 'addc')).toBe(false)
+  })
+
+  test('should one-to-more works as expect', () => {
+    expect(match('a+', 'a')).toBe(true)
+    expect(match('a+', '')).toBe(false)
+    expect(match('a+', 'b')).toBe(false)
+    expect(match('ab+c', 'ac')).toBe(false)
+    expect(match('ab+c', 'abc')).toBe(true)
+    expect(match('ab+c', 'abbbc')).toBe(true)
+    expect(match('a(abc)+c', 'ac')).toBe(false)
+    expect(match('a(abc)+c', 'aabcc')).toBe(true)
+    expect(match('a(abc)+c', 'aabcabcc')).toBe(true)
+    expect(match('a(abc)+c', 'addc')).toBe(false)
   })
 
   test('should complicated exp works as expect', () => {
