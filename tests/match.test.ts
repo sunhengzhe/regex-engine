@@ -14,6 +14,7 @@ describe('#match', () => {
     expect(match('jack|rose', 'jack')).toBe(true)
     expect(match('jack|rose', 'rose')).toBe(true)
     expect(match('jack|rose', 'jac')).toBe(false)
+    expect(match('(jack|rose)*', 'jackjackrose')).toBe(true)
     expect(match('ab', 'ab')).toBe(true)
     expect(match('ab', 'a')).toBe(false)
 
