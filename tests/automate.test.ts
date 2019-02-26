@@ -104,6 +104,15 @@ describe('#automata', () => {
       expect(closureNFA.startState.epsilonTransition[0].transition.a.epsilonTransition[1]).toEqual(closureNFA.endState)
       expect(closureNFA.startState.epsilonTransition[0].transition.a.epsilonTransition[0].transition.a.epsilonTransition[1]).toEqual(closureNFA.endState)
     })
+
+    test('should zeroOrOne works well', () => {
+      const NFA1 = NFA.createBasicNFA("a");
+      const closureNFA = NFA.zeroOrOne(NFA1);
+
+      expect(closureNFA.startState.epsilonTransition[1]).toEqual(closureNFA.endState)
+      expect(closureNFA.startState.epsilonTransition[0].transition.a.epsilonTransition.length).toBe(1)
+      expect(closureNFA.startState.epsilonTransition[0].transition.a.epsilonTransition[0]).toEqual(closureNFA.endState)
+    })
   })
 
   describe('isMatchOf', () => {
