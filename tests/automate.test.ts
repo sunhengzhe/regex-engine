@@ -62,10 +62,47 @@ describe('#automata', () => {
 
       const NFA3 = buildToNFA('a*')
       expect(NFA3.startState.epsilonTransition[1]).toEqual(new State(true))
-      expect(NFA3.startState.epsilonTransition[0].transition.a.epsilonTransition[0])
+      expect(NFA3.startState.epsilonTransition[0].transition.a.epsilonTransition[1])
         .toEqual(new State(true))
-      expect(NFA3.startState.epsilonTransition[0].transition.a.epsilonTransition[1].transition.a.epsilonTransition[0])
+      expect(NFA3.startState.epsilonTransition[0].transition.a.epsilonTransition[0].transition.a.epsilonTransition[1])
         .toEqual(new State(true))
+    })
+
+    test('should createBasicNFA works well', () => {
+      const basicNFAWithSymbol = NFA.createBasicNFA("a");
+      const basicNFAWithEpsilon = NFA.createBasicNFA(undefined);
+
+      expect(basicNFAWithSymbol.startState.transition.a).toEqual(basicNFAWithSymbol.endState)
+      expect(basicNFAWithEpsilon.startState.epsilonTransition[0]).toEqual(basicNFAWithEpsilon.endState)
+    })
+
+    test('should union works well', () => {
+      const NFA1 = NFA.createBasicNFA("a");
+      const NFA2 = NFA.createBasicNFA("b");
+      const unionNFA = NFA.union(NFA1, NFA2);
+
+      expect(unionNFA.startState.epsilonTransition.length).toBe(2)
+      expect(unionNFA.startState.epsilonTransition[0].transition.a.epsilonTransition[0]).toEqual(unionNFA.endState)
+      expect(unionNFA.startState.epsilonTransition[1].transition.b.epsilonTransition[0]).toEqual(unionNFA.endState)
+    })
+
+    test('should concat works well', () => {
+      const NFA1 = NFA.createBasicNFA("a");
+      const NFA2 = NFA.createBasicNFA("b");
+      const concatNFA = NFA.concat(NFA1, NFA2);
+
+      expect(concatNFA.startState).toEqual(NFA1.startState)
+      expect(concatNFA.endState).toEqual(NFA2.endState)
+      expect(concatNFA.startState.transition.a.epsilonTransition[0].transition.b).toEqual(concatNFA.endState)
+    })
+
+    test('should closure works well', () => {
+      const NFA1 = NFA.createBasicNFA("a");
+      const closureNFA = NFA.closure(NFA1);
+
+      expect(closureNFA.startState.epsilonTransition[1]).toEqual(closureNFA.endState)
+      expect(closureNFA.startState.epsilonTransition[0].transition.a.epsilonTransition[1]).toEqual(closureNFA.endState)
+      expect(closureNFA.startState.epsilonTransition[0].transition.a.epsilonTransition[0].transition.a.epsilonTransition[1]).toEqual(closureNFA.endState)
     })
   })
 

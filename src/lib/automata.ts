@@ -62,8 +62,8 @@ export class NFA {
 
     newStartState.addEpsilonTransition(nfa.startState)
       .addEpsilonTransition(newEndState)
-    nfa.endState.addEpsilonTransition(newEndState)
-      .addEpsilonTransition(nfa.startState)
+    nfa.endState.addEpsilonTransition(nfa.startState)
+      .addEpsilonTransition(newEndState)
       .isEnd = false
 
       return new NFA(newStartState, newEndState)
