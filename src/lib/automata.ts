@@ -152,7 +152,11 @@ export const isMatchOf = (exp: string, nfa: NFA) => {
 
     currentStates.forEach(state => {
       if (state.transition[token]) {
-        nextStates = nextStates.concat(nfa.getClosure(state.transition[token]))
+        nextStates = nextStates.concat(
+          nfa
+            .getClosure(state.transition[token])
+            .filter(item => !nextStates.includes(item))
+        );
       }
     })
 
